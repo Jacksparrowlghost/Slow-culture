@@ -96,52 +96,35 @@
             100% { opacity: 1; }
         }
 
-        /* Snowflake effect on hover */
+        /* Floco de neve estilizado no hover */
         .start-button::before, .start-button::after {
             content: '';
             position: absolute;
             top: 50%;
             left: 50%;
-            width: 0;
-            height: 0;
-            border: 2px solid white;
-            border-radius: 50%;
-            transform: translate(-50%, -50%);
+            width: 10px;
+            height: 50px;
+            background-color: white;
+            transform-origin: center;
             opacity: 0;
             transition: all 0.5s ease;
         }
 
         .start-button:hover::before {
-            width: 40px;
-            height: 40px;
             opacity: 1;
-            transform: translate(-50%, -50%) rotate(45deg);
-            border-width: 3px;
+            transform: translate(-50%, -50%) rotate(0deg);
         }
 
         .start-button:hover::after {
-            width: 20px;
-            height: 20px;
             opacity: 1;
-            transform: translate(-50%, -50%) rotate(-45deg);
-            border-width: 2px;
+            transform: translate(-50%, -50%) rotate(60deg);
         }
 
-        /* Additional lines for the snowflake */
-        .start-button:hover::before,
-        .start-button:hover::after {
-            box-shadow: 
-                0 -30px 0 0 white,
-                0 30px 0 0 white,
-                -30px 0 0 0 white,
-                30px 0 0 0 white;
-        }
-
+        /* Linhas adicionais para formar o floco de neve */
         .start-button:hover {
             background-color: transparent;
             color: transparent;
         }
-
     </style>
 </head>
 <body>
