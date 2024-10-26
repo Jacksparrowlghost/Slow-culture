@@ -121,26 +121,23 @@
             opacity: 0.8;
         }
 
-        /* Efeito de quebra */
-        .break-effect {
-            animation: breakScreen 1s forwards;
+        /* Efeito de quebra em bloquinhos */
+        .block {
+            position: absolute;
+            width: 20px; /* Largura dos blocos */
+            height: 20px; /* Altura dos blocos */
+            background: black; /* Cor dos blocos */
+            opacity: 0.7;
+            transition: transform 0.5s ease; /* Transição suave ao cair */
         }
 
-        @keyframes breakScreen {
-            0% { 
-                transform: scale(1); 
-            }
-            25% { 
-                transform: scaleY(1.2); 
-            }
-            50% { 
-                transform: scaleY(0.8); 
-            }
-            75% { 
-                transform: scaleY(1.2); 
-            }
-            100% { 
-                transform: scaleY(0); 
+        .fall {
+            animation: fallBlock 1s forwards; /* Animação de queda */
+        }
+
+        @keyframes fallBlock {
+            to {
+                transform: translateY(100vh); /* Queda até o fundo da tela */
             }
         }
 
@@ -184,9 +181,9 @@
         }
 
         function startSlideshow() {
-            // Aplica o efeito de quebra
-            document.body.classList.add('break-effect');
-
+            // Para a criação de blocos
+            createBlocks();
+            
             // Oculta o botão após o clique
             startButton.style.display = 'none'; 
             slideshowContainer.style.display = 'block';
@@ -196,11 +193,23 @@
             // Para a criação de flocos de neve
             clearInterval(snowflakeInterval);
             document.querySelectorAll('.snowflake').forEach(snowflake => snowflake.remove()); // Remove flocos de neve já existentes
+        }
 
-            // Remove o efeito de quebra após a animação
-            setTimeout(() => {
-                document.body.classList.remove('break-effect');
-            }, 1000); // Duração da animação de quebra
+        function createBlocks() {
+            const numBlocks = 50; // Número de blocos
+            for (let i = 0; i < numBlocks; i++) {
+                const block = document.createElement('div');
+                block.className = 'block';
+                block.style.left = `${Math.random() * 100}vw`; // Posição horizontal aleatória
+                block.style.top = `${Math.random() * 50}vh`; // Posição inicial aleatória (acima da tela)
+                document.body.appendChild(block);
+                block.classList.add('fall');
+
+                // Remover bloco após a animação
+                block.addEventListener('animationend', () => {
+                    block.remove();
+                });
+            }
         }
 
         function toggleFullScreen(element) {
