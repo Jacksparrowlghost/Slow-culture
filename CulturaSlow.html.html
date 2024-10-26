@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Animated Image Slideshow with Black Fade</title>
+    <style>
+        body {
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+            font-family: Arial, sans-serif;
+            overflow: hidden; /* Prevent scrolling */
+        }
+
+        .slideshow-container {
+            position: relative;
+            width: 100vw; /* Full width */
+            height: 100vh; /* Full height */
+            overflow: hidden;
+        }
+
+        .slide {
+            position: absolute;
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            object-fit: cover; /* Cover the container */
+            opacity: 0; /* Start hidden */
+            transition: opacity 1s ease; /* Fade effect */
+        }
+
+        .active {
+            opacity: 1; /* Fully opaque */
+        }
+
+        /* Black overlay */
+        .black-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: black;
+            opacity: 0; /* Start hidden */
+            transition: opacity 1s ease; /* Fade effect for overlay */
+            z-index: 1; /* Place overlay above images */
+        }
+
+        .fade-out {
+            opacity: 1; /* Fully opaque */
+        }
+
+    </style>
+</head>
+<body>
+    <div class="slideshow-container">
+        <img class="slide active" src="images/CulturaSlow1.png" alt="Cultura Slow Image 1" onclick="toggleFullScreen(this)">
+        <img class="slide" src="images/CulturaSlow2.png" alt="Cultura Slow Image 2" onclick="toggleFullScreen(this)">
+        <img class="slide" src="images/CulturaSlow3.png" alt="Cultura Slow Image 3" onclick="toggleFullScreen(this)">
+        <div class="black-overlay" id="overlay"></div>
+    </div>
+
+    <script>
+        // Image slideshow functionality
+        let currentIndex = 0;
+        const slides = document.querySelectorAll('.slide');
+        const overlay = document.getElementById('overlay');
+
+        function showSlide(index) {
+            slides.forEach((slide, i) => {
+                slide.classList.remove('active');
+                if (i === index) {
+                    slide.classList.add('active');
+                }
+            });
+        }
+
+        function nextSlide() {
+            overlay.classList.add('fade-out'); // Show the black overlay
+            setTimeout(() => {
+                currentIndex = (currentIndex + 1) % slides.length; // Loop back to the first slide
+                showSlide(currentIndex);
+                overlay.classList.remove('fade-out'); // Hide the black overlay
+            }, 1000); // Match this duration with the overlay transition duration
+        }
+
+        // Show the first slide initially
+        showSlide(currentIndex);
+
+        // Change slide every 5 seconds
+        setInterval(nextSlide, 5000);
+
+        // Function to toggle full screen
+        function toggleFullScreen(element) {
+            if (!document.fullscreenElement) {
+                element.requestFullscreen().catch(err => {
+                    console.error(`Error attempting to enable full-screen mode: ${err.message}`);
+                });
+            } else {
+                document.exitFullscreen();
+            }
+        }
+    </script>
+</body>
+</html>
