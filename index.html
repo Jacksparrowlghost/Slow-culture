@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Animated Image Slideshow with Black Fade</title>
+    <link rel="icon" href="imagens/image.png" type="image/png"> <!-- Favicon Link -->
     <style>
         body {
             margin: 0;
@@ -14,7 +15,7 @@
             background-color: #f0f0f0;
             font-family: Arial, sans-serif;
             overflow: hidden;
-            position: relative; /* Adiciona posição relativa para o efeito de neve */
+            position: relative; /* Position relative for snow effect */
         }
 
         /* Background animation */
@@ -40,17 +41,17 @@
         /* Snow effect */
         .snowflake {
             position: absolute;
-            top: -10px; /* Começa acima da tela */
+            top: -10px; /* Start above the screen */
             background: white;
             border-radius: 50%;
             opacity: 0.8;
             animation: fall linear infinite;
-            pointer-events: none; /* Não interfere com eventos do mouse */
+            pointer-events: none; /* Does not interfere with mouse events */
         }
 
         @keyframes fall {
             0% { transform: translateY(0); }
-            100% { transform: translateY(100vh); } /* Cai até a parte inferior da tela */
+            100% { transform: translateY(100vh); } /* Falls to the bottom of the screen */
         }
 
         .slideshow-container {
@@ -95,14 +96,14 @@
         .start-button {
             position: absolute;
             z-index: 2;
-            background: url('imagens/image.png') no-repeat center; /* Substitua pelo seu floco de neve */
+            background: url('imagens/image.png') no-repeat center; /* Replace with your snowflake image */
             background-size: contain;
-            width: 100px; /* Ajuste a largura conforme necessário */
-            height: 100px; /* Ajuste a altura conforme necessário */
+            width: 100px; /* Adjust width as necessary */
+            height: 100px; /* Adjust height as necessary */
             border: none;
             cursor: pointer;
             opacity: 0;
-            animation: fadeInButton 2s forwards, spin 10s linear infinite; /* Adiciona a animação de rotação */
+            animation: fadeInButton 2s forwards, spin 10s linear infinite; /* Adds rotation animation */
         }
 
         @keyframes fadeInButton {
@@ -110,17 +111,15 @@
             100% { opacity: 1; }
         }
 
-        /* Animação de rotação */
+        /* Rotation animation */
         @keyframes spin {
             from { transform: rotate(0deg); }
             to { transform: rotate(360deg); }
         }
 
         .start-button:hover {
-            /* Remover a animação de escala */
-            opacity: 0.8;
+            opacity: 0.8; /* Remove scale animation */
         }
-
     </style>
 </head>
 <body>
@@ -129,79 +128,5 @@
     <div class="slideshow-container">
         <img class="slide active" src="imagens/CulturaSlow1.png" alt="CulturaSlow1.png" onclick="toggleFullScreen(this)">
         <img class="slide" src="imagens/CulturaSlow2.png" alt="CulturaSlow2.png" onclick="toggleFullScreen(this)">
-        <img class="slide" src="imagens/CulturaSlow3.png" alt="CulturaSlow3.png" onclick="toggleFullScreen(this)">
-        <div class="black-overlay" id="overlay"></div>
-    </div>
-
-    <script>
-        let currentIndex = 0;
-        const slides = document.querySelectorAll('.slide');
-        const overlay = document.getElementById('overlay');
-        const slideshowContainer = document.querySelector('.slideshow-container');
-        const startButton = document.querySelector('.start-button');
-        let interval;
-        let snowflakeInterval; // Intervalo para a criação de flocos de neve
-
-        function showSlide(index) {
-            slides.forEach((slide, i) => {
-                slide.classList.remove('active');
-                if (i === index) {
-                    slide.classList.add('active');
-                }
-            });
-        }
-
-        function nextSlide() {
-            overlay.classList.add('fade-out');
-            setTimeout(() => {
-                currentIndex = (currentIndex + 1) % slides.length;
-                showSlide(currentIndex);
-                overlay.classList.remove('fade-out');
-            }, 1000);
-        }
-
-        function startSlideshow() {
-            // Oculta o botão após o clique
-            startButton.style.display = 'none'; 
-            slideshowContainer.style.display = 'block';
-            showSlide(currentIndex);
-            interval = setInterval(nextSlide, 5000);
-
-            // Para a criação de flocos de neve
-            clearInterval(snowflakeInterval);
-            document.querySelectorAll('.snowflake').forEach(snowflake => snowflake.remove()); // Remove flocos de neve já existentes
-        }
-
-        function toggleFullScreen(element) {
-            if (!document.fullscreenElement) {
-                element.requestFullscreen().catch(err => {
-                    console.error(`Error attempting to enable full-screen mode: ${err.message}`);
-                });
-            } else {
-                document.exitFullscreen();
-            }
-        }
-
-        // Função para criar flocos de neve
-        function createSnowflake() {
-            const snowflake = document.createElement('div');
-            snowflake.className = 'snowflake';
-            const size = Math.random() * 10 + 5; // Tamanho aleatório entre 5px e 15px
-            snowflake.style.width = `${size}px`;
-            snowflake.style.height = `${size}px`;
-            snowflake.style.left = `${Math.random() * 100}vw`; // Posição horizontal aleatória
-            snowflake.style.animationDuration = `${Math.random() * 3 + 2}s`; // Duração de queda aleatória entre 2s e 5s
-            document.body.appendChild(snowflake);
-
-            // Remover floco de neve após a animação
-            snowflake.addEventListener('animationend', () => {
-                snowflake.remove();
-            });
-        }
-
-        // Criar flocos de neve em intervalos regulares
-        snowflakeInterval = setInterval(createSnowflake, 300); // Cria um floco de neve a cada 300ms
-
-    </script>
-</body>
-</html>
+        <img class="slide" src="imagens/CulturaSlow3.png" alt="CulturaSlow Image 3" onclick="toggleFullScreen(this)">
+        <div
