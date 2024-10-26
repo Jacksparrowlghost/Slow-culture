@@ -126,15 +126,9 @@
             animation-duration: 10s; /* Gira mais devagar ao passar o mouse */
         }
 
-        .snowflake:hover {
-            animation-duration: 10s; /* Neve gira mais devagar ao passar o mouse */
-        }
-
-        /* Suave animação de pulsação */
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.1); }
-            100% { transform: scale(1); }
+        /* Efeito de parar a neve */
+        .no-snow {
+            animation: none !important; /* Remove a animação de queda da neve */
         }
 
     </style>
@@ -183,6 +177,12 @@
         }
 
         function startSlideshow() {
+            // Parar a animação da neve
+            const snowflakes = document.querySelectorAll('.snowflake');
+            snowflakes.forEach(snowflake => {
+                snowflake.classList.add('no-snow');
+            });
+
             snowflakeButton.style.display = 'none';
             slideshowContainer.style.display = 'block';
             showSlide(currentIndex);
