@@ -88,6 +88,7 @@
             transition: all 0.5s ease;
             opacity: 0; /* Start hidden for animation */
             animation: fadeInButton 2s forwards; /* Fade-in animation */
+            overflow: hidden;
         }
 
         @keyframes fadeInButton {
@@ -95,12 +96,12 @@
             100% { opacity: 1; }
         }
 
+        /* Flake effect */
         .start-button:hover {
-            background-color: #0056b3;
-            transform: scale(1.1); /* Slightly enlarge */
+            background-color: transparent;
+            color: transparent;
         }
 
-        /* Flake effect */
         .start-button:hover::before,
         .start-button:hover::after {
             content: '';
@@ -109,16 +110,24 @@
             left: 50%;
             width: 60px;
             height: 60px;
-            background-color: transparent;
-            border: 8px solid #fff;
+            background-color: #fff;
             border-radius: 50%;
-            opacity: 0.8;
             transform: translate(-50%, -50%) rotate(45deg);
-            transition: all 0.5s ease;
+            opacity: 0.8;
+            z-index: -1;
         }
 
         .start-button:hover::before {
-            transform: translate(-50%, -50%) rotate(0deg);
+            border-left: 2px solid #fff;
+            border-right: 2px solid #fff;
+            height: 100%;
+        }
+
+        .start-button:hover::after {
+            border-top: 2px solid #fff;
+            border-bottom: 2px solid #fff;
+            width: 100%;
+            z-index: 1;
         }
     </style>
 </head>
@@ -128,4 +137,52 @@
     <div class="slideshow-container">
         <img class="slide active" src="imagens/CulturaSlow1.png" alt="CulturaSlow1.png" onclick="toggleFullScreen(this)">
         <img class="slide" src="imagens/CulturaSlow2.png" alt="CulturaSlow2.png" onclick="toggleFullScreen(this)">
-        <img class="slide" src="imagens/CulturaSlow3.png"
+        <img class="slide" src="imagens/CulturaSlow3.png" alt="CulturaSlow3.png" onclick="toggleFullScreen(this)">
+        <div class="black-overlay" id="overlay"></div>
+    </div>
+
+    <script>
+        let currentIndex = 0;
+        const slides = document.querySelectorAll('.slide');
+        const overlay = document.getElementById('overlay');
+        const slideshowContainer = document.querySelector('.slideshow-container');
+        const startButton = document.querySelector('.start-button');
+        let interval;
+
+        function showSlide(index) {
+            slides.forEach((slide, i) => {
+                slide.classList.remove('active');
+                if (i === index) {
+                    slide.classList.add('active');
+                }
+            });
+        }
+
+        function nextSlide() {
+            overlay.classList.add('fade-out');
+            setTimeout(() => {
+                currentIndex = (currentIndex + 1) % slides.length;
+                showSlide(currentIndex);
+                overlay.classList.remove('fade-out');
+            }, 1000);
+        }
+
+        function startSlideshow() {
+            startButton.style.display = 'none';
+            slideshowContainer.style.display = 'block';
+            showSlide(currentIndex);
+            interval = setInterval(nextSlide, 5000);
+        }
+
+        function toggleFullScreen(element) {
+            if (!document.fullscreenElement) {
+                element.requestFullscreen().catch(err => {
+                    console.error(`Error attempting to enable full-screen mode: ${err.message}`);
+                });
+            } else {
+                document.exitFullscreen();
+            }
+        }
+    </script>
+</body>
+</html>
