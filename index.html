@@ -160,10 +160,17 @@
         }
 
         function startSlideshow() {
-            startButton.style.display = 'none'; // Oculta o botão após o clique
+            // Oculta o botão após o clique
+            startButton.style.display = 'none'; 
             slideshowContainer.style.display = 'block';
             showSlide(currentIndex);
             interval = setInterval(nextSlide, 5000);
+
+            // Remove os flocos de neve
+            const snowflakes = document.querySelectorAll('.snowflake');
+            snowflakes.forEach(snowflake => {
+                snowflake.remove();
+            });
         }
 
         function toggleFullScreen(element) {
