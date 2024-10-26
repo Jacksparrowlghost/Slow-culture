@@ -169,6 +169,7 @@
 
             // Para a criação de flocos de neve
             clearInterval(snowflakeInterval);
+            document.querySelectorAll('.snowflake').forEach(snowflake => snowflake.remove()); // Remove flocos de neve já existentes
         }
 
         function toggleFullScreen(element) {
