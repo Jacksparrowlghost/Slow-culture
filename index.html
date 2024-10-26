@@ -121,6 +121,29 @@
             opacity: 0.8;
         }
 
+        /* Efeito de quebra */
+        .break-effect {
+            animation: breakScreen 1s forwards;
+        }
+
+        @keyframes breakScreen {
+            0% { 
+                transform: scale(1); 
+            }
+            25% { 
+                transform: scaleY(1.2); 
+            }
+            50% { 
+                transform: scaleY(0.8); 
+            }
+            75% { 
+                transform: scaleY(1.2); 
+            }
+            100% { 
+                transform: scaleY(0); 
+            }
+        }
+
     </style>
 </head>
 <body>
@@ -161,6 +184,9 @@
         }
 
         function startSlideshow() {
+            // Aplica o efeito de quebra
+            document.body.classList.add('break-effect');
+
             // Oculta o botão após o clique
             startButton.style.display = 'none'; 
             slideshowContainer.style.display = 'block';
@@ -170,6 +196,11 @@
             // Para a criação de flocos de neve
             clearInterval(snowflakeInterval);
             document.querySelectorAll('.snowflake').forEach(snowflake => snowflake.remove()); // Remove flocos de neve já existentes
+
+            // Remove o efeito de quebra após a animação
+            setTimeout(() => {
+                document.body.classList.remove('break-effect');
+            }, 1000); // Duração da animação de quebra
         }
 
         function toggleFullScreen(element) {
