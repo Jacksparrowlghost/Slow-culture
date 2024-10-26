@@ -21,6 +21,7 @@
             width: 100vw; /* Full width */
             height: 100vh; /* Full height */
             overflow: hidden;
+            display: none; /* Initially hidden */
         }
 
         .slide {
@@ -53,9 +54,28 @@
             opacity: 1; /* Fully opaque */
         }
 
+        /* Button styling */
+        .start-button {
+            position: absolute;
+            z-index: 2;
+            padding: 15px 30px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            font-size: 20px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .start-button:hover {
+            background-color: #0056b3;
+        }
     </style>
 </head>
 <body>
+    <button class="start-button" onclick="startSlideshow()">Vamos conhecer a cultura slow</button>
+
     <div class="slideshow-container">
         <img class="slide active" src="imagens/CulturaSlow1.png" alt="CulturaSlow1.png" onclick="toggleFullScreen(this)">
         <img class="slide" src="imagens/CulturaSlow2.png" alt="CulturaSlow2.png" onclick="toggleFullScreen(this)">
@@ -68,6 +88,9 @@
         let currentIndex = 0;
         const slides = document.querySelectorAll('.slide');
         const overlay = document.getElementById('overlay');
+        const slideshowContainer = document.querySelector('.slideshow-container');
+        const startButton = document.querySelector('.start-button');
+        let interval;
 
         function showSlide(index) {
             slides.forEach((slide, i) => {
@@ -87,11 +110,13 @@
             }, 1000); // Match this duration with the overlay transition duration
         }
 
-        // Show the first slide initially
-        showSlide(currentIndex);
-
-        // Change slide every 5 seconds
-        setInterval(nextSlide, 5000);
+        // Function to start the slideshow
+        function startSlideshow() {
+            startButton.style.display = 'none'; // Hide the start button
+            slideshowContainer.style.display = 'block'; // Show the slideshow container
+            showSlide(currentIndex); // Show the first slide
+            interval = setInterval(nextSlide, 5000); // Change slide every 5 seconds
+        }
 
         // Function to toggle full screen
         function toggleFullScreen(element) {
