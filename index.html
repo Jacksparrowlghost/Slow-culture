@@ -14,6 +14,7 @@
             background-color: #f0f0f0;
             font-family: Arial, sans-serif;
             overflow: hidden;
+            position: relative; /* Adiciona posição relativa para o efeito de neve */
         }
 
         /* Background animation */
@@ -34,6 +35,22 @@
             0% { background-position: 0% 50%; }
             50% { background-position: 100% 50%; }
             100% { background-position: 0% 50%; }
+        }
+
+        /* Snow effect */
+        .snowflake {
+            position: absolute;
+            top: -10px; /* Começa acima da tela */
+            background: white;
+            border-radius: 50%;
+            opacity: 0.8;
+            animation: fall linear infinite;
+            pointer-events: none; /* Não interfere com eventos do mouse */
+        }
+
+        @keyframes fall {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(100vh); } /* Cai até a parte inferior da tela */
         }
 
         .slideshow-container {
@@ -84,7 +101,6 @@
             height: 100px; /* Ajuste a altura conforme necessário */
             border: none;
             cursor: pointer;
-            transition: transform 0.5s ease, opacity 0.5s ease;
             opacity: 0;
             animation: fadeInButton 2s forwards, spin 10s linear infinite; /* Adiciona a animação de rotação */
         }
@@ -101,19 +117,8 @@
         }
 
         .start-button:hover {
-            transform: scale(1.2);
+            /* Remover a animação de escala */
             opacity: 0.8;
-        }
-
-        /* Smooth pulse animation */
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.1); }
-            100% { transform: scale(1); }
-        }
-
-        .start-button:hover {
-            animation: pulse 1.5s infinite;
         }
 
     </style>
@@ -170,6 +175,27 @@
                 document.exitFullscreen();
             }
         }
+
+        // Função para criar flocos de neve
+        function createSnowflake() {
+            const snowflake = document.createElement('div');
+            snowflake.className = 'snowflake';
+            const size = Math.random() * 10 + 5; // Tamanho aleatório entre 5px e 15px
+            snowflake.style.width = `${size}px`;
+            snowflake.style.height = `${size}px`;
+            snowflake.style.left = `${Math.random() * 100}vw`; // Posição horizontal aleatória
+            snowflake.style.animationDuration = `${Math.random() * 3 + 2}s`; // Duração de queda aleatória entre 2s e 5s
+            document.body.appendChild(snowflake);
+
+            // Remover floco de neve após a animação
+            snowflake.addEventListener('animationend', () => {
+                snowflake.remove();
+            });
+        }
+
+        // Criar flocos de neve em intervalos regulares
+        setInterval(createSnowflake, 300); // Cria um floco de neve a cada 300ms
+
     </script>
 </body>
 </html>
