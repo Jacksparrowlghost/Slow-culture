@@ -1,23 +1,23 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Slideshow com Efeito de Quebra</title>
+    <title>Animated Image Slideshow with Black Fade</title>
     <style>
         body {
             margin: 0;
-            display: flex;
+            display: flex;   
             justify-content: center;
             align-items: center;
             height: 100vh;
             background-color: #f0f0f0;
             font-family: Arial, sans-serif;
             overflow: hidden;
-            position: relative;
+            position: relative; /* Adiciona posição relativa para o efeito de neve */
         }
 
-        /* Animação de fundo */
+        /* Background animation */
         body::before {
             content: '';
             position: absolute;
@@ -35,6 +35,22 @@
             0% { background-position: 0% 50%; }
             50% { background-position: 100% 50%; }
             100% { background-position: 0% 50%; }
+        }
+
+        /* Snow effect */
+        .snowflake {
+            position: absolute;
+            top: -10px; /* Começa acima da tela */
+            background: white;
+            border-radius: 50%;
+            opacity: 0.8;
+            animation: fall linear infinite;
+            pointer-events: none; /* Não interfere com eventos do mouse */
+        }
+
+        @keyframes fall {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(100vh); } /* Cai até a parte inferior da tela */
         }
 
         .slideshow-container {
@@ -58,35 +74,35 @@
             opacity: 1;
         }
 
-        /* Efeito de quebra em bloquinhos */
-        .block {
+        /* Black overlay */
+        .black-overlay {
             position: absolute;
-            width: 20px; /* Largura dos blocos */
-            height: 20px; /* Altura dos blocos */
-            background: black; /* Cor dos blocos */
-            opacity: 0.7;
-            transition: transform 0.5s ease, opacity 0.5s ease; /* Transição suave ao cair */
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: black;
+            opacity: 0;
+            transition: opacity 1s ease;
+            z-index: 1;
         }
 
-        @keyframes fallBlock {
-            to {
-                transform: translateY(100vh); /* Queda até o fundo da tela */
-                opacity: 0; /* Faz os blocos desaparecerem ao cair */
-            }
+        .fade-out {
+            opacity: 1;
         }
 
-        /* Botão para iniciar o slideshow */
+        /* Button styling for snowflake */
         .start-button {
             position: absolute;
             z-index: 2;
-            background: url('imagens/image.png') no-repeat center;
+            background: url('imagens/image.png') no-repeat center; /* Substitua pelo seu floco de neve */
             background-size: contain;
             width: 100px; /* Ajuste a largura conforme necessário */
             height: 100px; /* Ajuste a altura conforme necessário */
             border: none;
             cursor: pointer;
             opacity: 0;
-            animation: fadeInButton 2s forwards, spin 10s linear infinite;
+            animation: fadeInButton 2s forwards, spin 10s linear infinite; /* Adiciona a animação de rotação */
         }
 
         @keyframes fadeInButton {
@@ -94,12 +110,14 @@
             100% { opacity: 1; }
         }
 
+        /* Animação de rotação */
         @keyframes spin {
             from { transform: rotate(0deg); }
             to { transform: rotate(360deg); }
         }
 
         .start-button:hover {
+            /* Remover a animação de escala */
             opacity: 0.8;
         }
 
@@ -112,14 +130,17 @@
         <img class="slide active" src="imagens/CulturaSlow1.png" alt="CulturaSlow1.png" onclick="toggleFullScreen(this)">
         <img class="slide" src="imagens/CulturaSlow2.png" alt="CulturaSlow2.png" onclick="toggleFullScreen(this)">
         <img class="slide" src="imagens/CulturaSlow3.png" alt="CulturaSlow3.png" onclick="toggleFullScreen(this)">
+        <div class="black-overlay" id="overlay"></div>
     </div>
 
     <script>
         let currentIndex = 0;
         const slides = document.querySelectorAll('.slide');
+        const overlay = document.getElementById('overlay');
         const slideshowContainer = document.querySelector('.slideshow-container');
         const startButton = document.querySelector('.start-button');
         let interval;
+        let snowflakeInterval; // Intervalo para a criação de flocos de neve
 
         function showSlide(index) {
             slides.forEach((slide, i) => {
@@ -131,38 +152,24 @@
         }
 
         function nextSlide() {
-            currentIndex = (currentIndex + 1) % slides.length;
-            showSlide(currentIndex);
+            overlay.classList.add('fade-out');
+            setTimeout(() => {
+                currentIndex = (currentIndex + 1) % slides.length;
+                showSlide(currentIndex);
+                overlay.classList.remove('fade-out');
+            }, 1000);
         }
 
         function startSlideshow() {
             // Oculta o botão após o clique
             startButton.style.display = 'none'; 
-            createBlocks();
+            slideshowContainer.style.display = 'block';
+            showSlide(currentIndex);
+            interval = setInterval(nextSlide, 5000);
 
-            // Aguarda a animação dos blocos antes de iniciar o slideshow
-            setTimeout(() => {
-                slideshowContainer.style.display = 'block';
-                showSlide(currentIndex);
-                interval = setInterval(nextSlide, 5000);
-            }, 1500); // Aguarda 1.5 segundos antes de iniciar o slideshow
-        }
-
-        function createBlocks() {
-            const numBlocks = 50; // Número de blocos
-            for (let i = 0; i < numBlocks; i++) {
-                const block = document.createElement('div');
-                block.className = 'block';
-                block.style.left = `${Math.random() * 100}vw`; // Posição horizontal aleatória
-                block.style.top = `${Math.random() * 50}vh`; // Posição inicial aleatória (acima da tela)
-                document.body.appendChild(block);
-                block.style.animation = 'fallBlock 1s forwards'; // Aplica a animação de queda
-
-                // Remover bloco após a animação
-                block.addEventListener('animationend', () => {
-                    block.remove();
-                });
-            }
+            // Para a criação de flocos de neve
+            clearInterval(snowflakeInterval);
+            document.querySelectorAll('.snowflake').forEach(snowflake => snowflake.remove()); // Remove flocos de neve já existentes
         }
 
         function toggleFullScreen(element) {
@@ -174,6 +181,27 @@
                 document.exitFullscreen();
             }
         }
+
+        // Função para criar flocos de neve
+        function createSnowflake() {
+            const snowflake = document.createElement('div');
+            snowflake.className = 'snowflake';
+            const size = Math.random() * 10 + 5; // Tamanho aleatório entre 5px e 15px
+            snowflake.style.width = `${size}px`;
+            snowflake.style.height = `${size}px`;
+            snowflake.style.left = `${Math.random() * 100}vw`; // Posição horizontal aleatória
+            snowflake.style.animationDuration = `${Math.random() * 3 + 2}s`; // Duração de queda aleatória entre 2s e 5s
+            document.body.appendChild(snowflake);
+
+            // Remover floco de neve após a animação
+            snowflake.addEventListener('animationend', () => {
+                snowflake.remove();
+            });
+        }
+
+        // Criar flocos de neve em intervalos regulares
+        snowflakeInterval = setInterval(createSnowflake, 300); // Cria um floco de neve a cada 300ms
+
     </script>
 </body>
 </html>
