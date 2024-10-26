@@ -181,14 +181,18 @@
         }
 
         function startSlideshow() {
-            // Para a criação de blocos
-            createBlocks();
-            
             // Oculta o botão após o clique
             startButton.style.display = 'none'; 
-            slideshowContainer.style.display = 'block';
-            showSlide(currentIndex);
-            interval = setInterval(nextSlide, 5000);
+
+            // Cria os blocos antes de iniciar o slideshow
+            createBlocks();
+
+            // Após criar os blocos, aguarda um tempo para começar o slideshow
+            setTimeout(() => {
+                slideshowContainer.style.display = 'block';
+                showSlide(currentIndex);
+                interval = setInterval(nextSlide, 5000);
+            }, 1500); // Aguarda 1.5 segundos antes de iniciar o slideshow
 
             // Para a criação de flocos de neve
             clearInterval(snowflakeInterval);
