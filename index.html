@@ -86,12 +86,18 @@
             cursor: pointer;
             transition: transform 0.5s ease, opacity 0.5s ease;
             opacity: 0;
-            animation: fadeInButton 2s forwards;
+            animation: fadeInButton 2s forwards, spin 10s linear infinite; /* Adiciona a animação de rotação */
         }
 
         @keyframes fadeInButton {
             0% { opacity: 0; }
             100% { opacity: 1; }
+        }
+
+        /* Animação de rotação */
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
         }
 
         .start-button:hover {
