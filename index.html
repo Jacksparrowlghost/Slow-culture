@@ -103,6 +103,22 @@
         .start-button:hover {
             opacity: 0.8;
         }
+
+        /* Snowflake styles */
+        .snowflake {
+            position: absolute;
+            top: -10px;
+            color: white;
+            font-size: 1.5em;
+            pointer-events: none; /* Não interage com o mouse */
+            animation: fall linear infinite;
+        }
+
+        @keyframes fall {
+            to {
+                transform: translateY(100vh); /* Caindo até a parte inferior da tela */
+            }
+        }
     </style>
 </head>
 <body>
@@ -147,6 +163,7 @@
             slideshowContainer.style.display = 'block';
             showSlide(currentIndex);
             interval = setInterval(nextSlide, 20000); // 20 segundos
+            createSnowflakes(); // Inicia a criação de flocos de neve
         }
 
         function toggleFullScreen(element) {
@@ -156,6 +173,24 @@
                 });
             } else {
                 document.exitFullscreen();
+            }
+        }
+
+        function createSnowflakes() {
+            const snowflakeCount = 100; // Número de flocos de neve
+            for (let i = 0; i < snowflakeCount; i++) {
+                const snowflake = document.createElement('div');
+                snowflake.classList.add('snowflake');
+                snowflake.textContent = '❄'; // Caracter de floco de neve
+                snowflake.style.left = Math.random() * 100 + 'vw'; // Posição horizontal aleatória
+                snowflake.style.animationDuration = Math.random() * 3 + 2 + 's'; // Duração aleatória
+                snowflake.style.opacity = Math.random(); // Opacidade aleatória
+                document.body.appendChild(snowflake);
+
+                // Remove o floco de neve após a animação
+                snowflake.addEventListener('animationend', () => {
+                    snowflake.remove();
+                });
             }
         }
     </script>
