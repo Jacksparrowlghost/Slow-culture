@@ -181,7 +181,7 @@
         }
 
         function createSnowflakes() {
-            const snowflakeCount = 20; // Número de flocos de neve
+            const snowflakeCount = 20; // Reduzindo o número de flocos de neve
             for (let i = 0; i < snowflakeCount; i++) {
                 const snowflake = document.createElement('div');
                 snowflake.classList.add('snowflake');
@@ -200,8 +200,8 @@
 
         // Cria os flocos de neve ao carregar a página
         createSnowflakes();
-        // Recria os flocos de neve a cada 1 segundo
-        snowflakeInterval = setInterval(createSnowflakes, 1000);
+        // Recria os flocos de neve a cada 2 segundos para otimização
+        snowflakeInterval = setInterval(createSnowflakes, 2000);
     </script>
 </body>
 </html>
