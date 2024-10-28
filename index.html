@@ -15,7 +15,7 @@
             background-color: #f0f0f0;
             font-family: Arial, sans-serif;
             overflow: hidden;
-            position: relative; /* Adiciona posição relativa para o efeito de neve */
+            position: relative;
         }
 
         /* Background animation */
@@ -36,22 +36,6 @@
             0% { background-position: 0% 50%; }
             50% { background-position: 100% 50%; }
             100% { background-position: 0% 50%; }
-        }
-
-        /* Snow effect */
-        .snowflake {
-            position: absolute;
-            top: -10px; /* Começa acima da tela */
-            background: white;
-            border-radius: 50%;
-            opacity: 0.8;
-            animation: fall linear infinite;
-            pointer-events: none; /* Não interfere com eventos do mouse */
-        }
-
-        @keyframes fall {
-            0% { transform: translateY(0); }
-            100% { transform: translateY(100vh); } /* Cai até a parte inferior da tela */
         }
 
         .slideshow-container {
@@ -92,18 +76,18 @@
             opacity: 1;
         }
 
-        /* Button styling for snowflake */
+        /* Start button styling */
         .start-button {
             position: absolute;
             z-index: 2;
-            background: url('imagens/image.png') no-repeat center; /* Substitua pelo seu floco de neve */
+            background: url('imagens/image.png') no-repeat center;
             background-size: contain;
-            width: 100px; /* Ajuste a largura conforme necessário */
-            height: 100px; /* Ajuste a altura conforme necessário */
+            width: 100px;
+            height: 100px;
             border: none;
             cursor: pointer;
             opacity: 0;
-            animation: fadeInButton 2s forwards, spin 10s linear infinite; /* Adiciona a animação de rotação */
+            animation: fadeInButton 2s forwards, spin 10s linear infinite;
         }
 
         @keyframes fadeInButton {
@@ -111,21 +95,49 @@
             100% { opacity: 1; }
         }
 
-        /* Animação de rotação */
         @keyframes spin {
             from { transform: rotate(0deg); }
             to { transform: rotate(360deg); }
         }
 
         .start-button:hover {
-            /* Remover a animação de escala */
             opacity: 0.8;
+        }
+
+        /* Navigation button styling */
+        .nav-button {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: rgba(0, 0, 0, 0.3);
+            border: none;
+            color: white;
+            font-size: 24px;
+            padding: 10px;
+            cursor: pointer;
+            border-radius: 50%;
+            z-index: 2;
+            transition: background-color 0.3s;
+        }
+
+        .nav-button:hover {
+            background-color: rgba(0, 0, 0, 0.6);
+        }
+
+        .prev-button {
+            left: 20px;
+        }
+
+        .next-button {
+            right: 20px;
         }
 
     </style>
 </head>
 <body>
     <button class="start-button" onclick="startSlideshow()"></button>
+    <button class="nav-button prev-button" onclick="prevSlide()">&#10094;</button>
+    <button class="nav-button next-button" onclick="nextSlide()">&#10095;</button>
 
     <div class="slideshow-container">
         <img class="slide active" src="imagens/Slow cuturinha-1.png" alt="Slow cuturinha-1.png" onclick="toggleFullScreen(this)">
@@ -142,7 +154,6 @@
         const slideshowContainer = document.querySelector('.slideshow-container');
         const startButton = document.querySelector('.start-button');
         let interval;
-        let snowflakeInterval; // Intervalo para a criação de flocos de neve
 
         function showSlide(index) {
             slides.forEach((slide, i) => {
@@ -162,16 +173,20 @@
             }, 1000);
         }
 
+        function prevSlide() {
+            overlay.classList.add('fade-out');
+            setTimeout(() => {
+                currentIndex = (currentIndex - 1 + slides.length) % slides.length;
+                showSlide(currentIndex);
+                overlay.classList.remove('fade-out');
+            }, 1000);
+        }
+
         function startSlideshow() {
-            // Oculta o botão após o clique
             startButton.style.display = 'none'; 
             slideshowContainer.style.display = 'block';
             showSlide(currentIndex);
-            interval = setInterval(nextSlide, 10000); // Muda para 10000ms (10 segundos)
-
-            // Para a criação de flocos de neve
-            clearInterval(snowflakeInterval);
-            document.querySelectorAll('.snowflake').forEach(snowflake => snowflake.remove()); // Remove flocos de neve já existentes
+            interval = setInterval(nextSlide, 10000); // 10 segundos
         }
 
         function toggleFullScreen(element) {
@@ -183,26 +198,6 @@
                 document.exitFullscreen();
             }
         }
-
-        // Função para criar flocos de neve
-        function createSnowflake() {
-            const snowflake = document.createElement('div');
-            snowflake.className = 'snowflake';
-            const size = Math.random() * 10 + 5; // Tamanho aleatório entre 5px e 15px
-            snowflake.style.width = `${size}px`;
-            snowflake.style.height = `${size}px`;
-            snowflake.style.left = `${Math.random() * 100}vw`; // Posição horizontal aleatória
-            snowflake.style.animationDuration = `${Math.random() * 3 + 2}s`; // Duração de queda aleatória entre 2s e 5s
-            document.body.appendChild(snowflake);
-
-            // Remover floco de neve após a animação
-            snowflake.addEventListener('animationend', () => {
-                snowflake.remove();
-            });
-        }
-
-        // Criar flocos de neve em intervalos regulares
-        snowflakeInterval = setInterval(createSnowflake, 300); // Cria um floco de neve a cada 300ms
 
     </script>
 </body>
