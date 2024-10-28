@@ -167,19 +167,19 @@
         function nextSlide() {
             overlay.classList.add('fade-out');
             setTimeout(() => {
-                currentIndex = (currentIndex + 1) % slides.length;
-                showSlide(currentIndex);
+                currentIndex = (currentIndex + 1) % slides.length; // Avança para o próximo índice
+                showSlide(currentIndex); // Exibe a nova imagem
                 overlay.classList.remove('fade-out');
-            }, 1000);
+            }, 1000); // Tempo da animação
         }
 
         function prevSlide() {
             overlay.classList.add('fade-out');
             setTimeout(() => {
-                currentIndex = (currentIndex - 1 + slides.length) % slides.length;
-                showSlide(currentIndex);
+                currentIndex = (currentIndex - 1 + slides.length) % slides.length; // Retrocede para o índice anterior
+                showSlide(currentIndex); // Exibe a nova imagem
                 overlay.classList.remove('fade-out');
-            }, 1000);
+            }, 1000); // Tempo da animação
         }
 
         function startSlideshow() {
@@ -190,7 +190,7 @@
         }
 
         function stopSlideshow() {
-            clearInterval(interval);
+            clearInterval(interval); // Para o intervalo
         }
 
         function toggleFullScreen(element) {
