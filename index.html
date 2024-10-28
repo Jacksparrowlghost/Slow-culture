@@ -44,6 +44,7 @@
             height: 100vh;
             overflow: hidden;
             display: none;
+            z-index: 2; /* Aumenta o z-index para ficar acima da neve */
         }
 
         .slide {
@@ -79,7 +80,7 @@
         /* Start button styling */
         .start-button {
             position: absolute;
-            z-index: 2;
+            z-index: 3; /* Aumenta o z-index para ficar acima da neve */
             background: url('imagens/image.png') no-repeat center;
             background-size: contain;
             width: 100px;
@@ -165,7 +166,8 @@
             showSlide(currentIndex);
             interval = setInterval(nextSlide, 20000); // 20 segundos
 
-            clearInterval(snowflakeInterval); // Para qualquer intervalo de flocos de neve existente
+            // Para a criação de flocos de neve
+            clearInterval(snowflakeInterval);
         }
 
         function toggleFullScreen(element) {
