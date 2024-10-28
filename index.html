@@ -103,41 +103,10 @@
         .start-button:hover {
             opacity: 0.8;
         }
-
-        /* Navigation button styling */
-        .nav-button {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            background-color: rgba(0, 0, 0, 0.3);
-            border: none;
-            color: white;
-            font-size: 24px;
-            padding: 10px;
-            cursor: pointer;
-            border-radius: 50%;
-            z-index: 2;
-            transition: background-color 0.3s;
-        }
-
-        .nav-button:hover {
-            background-color: rgba(0, 0, 0, 0.6);
-        }
-
-        .prev-button {
-            left: 20px;
-        }
-
-        .next-button {
-            right: 20px;
-        }
-
     </style>
 </head>
 <body>
     <button class="start-button" onclick="startSlideshow()"></button>
-    <button class="nav-button prev-button" onclick="prevSlide()">&#10094;</button>
-    <button class="nav-button next-button" onclick="nextSlide()">&#10095;</button>
 
     <div class="slideshow-container">
         <img class="slide active" src="imagens/Slow cuturinha-1.png" alt="Slow cuturinha-1.png" onclick="toggleFullScreen(this)">
@@ -173,24 +142,11 @@
             }, 1000); // Tempo da animação
         }
 
-        function prevSlide() {
-            overlay.classList.add('fade-out');
-            setTimeout(() => {
-                currentIndex = (currentIndex - 1 + slides.length) % slides.length; // Retrocede para o índice anterior
-                showSlide(currentIndex); // Exibe a nova imagem
-                overlay.classList.remove('fade-out');
-            }, 1000); // Tempo da animação
-        }
-
         function startSlideshow() {
             startButton.style.display = 'none';
             slideshowContainer.style.display = 'block';
             showSlide(currentIndex);
-            interval = setInterval(nextSlide, 10000); // 10 segundos
-        }
-
-        function stopSlideshow() {
-            clearInterval(interval); // Para o intervalo
+            interval = setInterval(nextSlide, 20000); // 20 segundos
         }
 
         function toggleFullScreen(element) {
@@ -202,17 +158,6 @@
                 document.exitFullscreen();
             }
         }
-
-        // Parar o slideshow automático ao clicar nos botões de navegação
-        document.querySelector('.prev-button').addEventListener('click', () => {
-            stopSlideshow();
-            prevSlide();
-        });
-
-        document.querySelector('.next-button').addEventListener('click', () => {
-            stopSlideshow();
-            nextSlide();
-        });
     </script>
 </body>
 </html>
