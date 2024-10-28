@@ -139,6 +139,7 @@
         const slideshowContainer = document.querySelector('.slideshow-container');
         const startButton = document.querySelector('.start-button');
         let interval;
+        let snowflakeInterval; // Variável para armazenar o intervalo da neve
 
         function showSlide(index) {
             slides.forEach((slide, i) => {
@@ -163,7 +164,8 @@
             slideshowContainer.style.display = 'block';
             showSlide(currentIndex);
             interval = setInterval(nextSlide, 20000); // 20 segundos
-            createSnowflakes(); // Inicia a criação de flocos de neve
+
+            clearInterval(snowflakeInterval); // Para qualquer intervalo de flocos de neve existente
         }
 
         function toggleFullScreen(element) {
@@ -193,6 +195,11 @@
                 });
             }
         }
+
+        // Cria os flocos de neve ao carregar a página
+        createSnowflakes();
+        // Recria os flocos de neve a cada 1 segundo
+        snowflakeInterval = setInterval(createSnowflakes, 1000);
     </script>
 </body>
 </html>
